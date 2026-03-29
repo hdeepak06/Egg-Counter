@@ -104,7 +104,7 @@ const HistoryItem = ({ log, onDelete, onEdit }: {
 export default function App() {
   const [logs, setLogs] = useState<EggLog[]>([]);
   const [currentInput, setCurrentInput] = useState('');
-  const [view, setView] = useState<'home' | 'history' | 'stats' | 'chat'>('home');
+  const [view, setView] = useState<'home' | 'history' | 'stats' | 'chat' | 'settings'>('home');
   const [darkMode, setDarkMode] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     { role: 'model', text: 'Hi! I am your Egg Counter Protein Assistant. How can I help you today?' }
@@ -112,6 +112,13 @@ export default function App() {
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [editingLog, setEditingLog] = useState<EggLog | null>(null);
+
+  const resetData = () => {
+    if (window.confirm('Are you sure you want to delete all your logs? This cannot be undone.')) {
+      setLogs([]);
+      localStorage.removeItem('egg_logs');
+    }
+  };
 
   // Load data
   useEffect(() => {
@@ -244,12 +251,10 @@ export default function App() {
           </div>
           <h1 className="text-xl font-bold tracking-tight">Egg Counter</h1>
         </div>
-        <button 
-          onClick={() => setDarkMode(!darkMode)}
-          className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
-        >
-          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+        <div className="flex items-center space-x-2">
+          <div className={`w-2 h-2 rounded-full ${logs.length > 0 ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}`} />
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live</span>
+        </div>
       </header>
 
       {/* Main Content Area */}
@@ -419,15 +424,76 @@ export default function App() {
               </form>
             </motion.div>
           )}
+          {view === 'settings' && (
+            <motion.div
+              key="settings"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+            >
+              <h2 className="text-2xl font-bold mb-6">Settings</h2>
+              
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-xl">
+                      {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                    </div>
+                    <span className="font-semibold">Dark Mode</span>
+                  </div>
+                  <button 
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`w-12 h-6 rounded-full transition-colors relative ${darkMode ? 'bg-amber-500' : 'bg-slate-200'}`}
+                  >
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${darkMode ? 'left-7' : 'left-1'}`} />
+                  </button>
+                </div>
+
+                <a 
+                  href="https://github.com/HDeepak6/Egg-counter" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-xl">
+                      <Plus size={20} className="rotate-45" /> {/* Using Plus as a placeholder for GitHub icon if needed, or just text */}
+                    </div>
+                    <div>
+                      <span className="font-semibold block">GitHub Repository</span>
+                      <span className="text-xs text-slate-500">View source code</span>
+                    </div>
+                  </div>
+                  <ChevronLeft size={20} className="rotate-180 text-slate-400" />
+                </a>
+
+                <div className="pt-8">
+                  <button 
+                    onClick={resetData}
+                    className="w-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-2xl font-bold flex items-center justify-center space-x-2"
+                  >
+                    <Trash2 size={20} />
+                    <span>Reset All Data</span>
+                  </button>
+                </div>
+
+                <div className="text-center pt-12">
+                  <p className="text-xs text-slate-400 font-semibold uppercase tracking-widest">Egg Counter v1.0.0</p>
+                  <p className="text-[10px] text-slate-400 mt-1">Made with ❤️ for healthy habits</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-100 dark:border-slate-800 px-6 py-4 flex justify-between items-center z-20">
+      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-100 dark:border-slate-800 px-4 py-4 flex justify-between items-center z-20">
         <NavButton active={view === 'home'} onClick={() => setView('home')} icon={Plus} label="Track" />
         <NavButton active={view === 'history'} onClick={() => setView('history')} icon={History} label="Logs" />
         <NavButton active={view === 'stats'} onClick={() => setView('stats')} icon={BarChart3} label="Stats" />
         <NavButton active={view === 'chat'} onClick={() => setView('chat')} icon={MessageSquare} label="AI" />
+        <NavButton active={view === 'settings'} onClick={() => setView('settings')} icon={Edit2} label="Settings" />
       </nav>
     </div>
   );

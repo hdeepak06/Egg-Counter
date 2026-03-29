@@ -1,20 +1,42 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Egg Counter 🥚
 
-# Run and deploy your AI Studio app
+A modern, mobile-first application to track your daily egg consumption, monitor protein intake, and maintain healthy habits.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/71f286f6-f2bd-4df5-ac3d-a2a7cebea38b
+- **Numeric Keypad:** Fast and easy input for daily egg counts.
+- **Daily Tracking:** Log your eggs and see your progress in real-time.
+- **History & Management:** Edit or delete past entries easily.
+- **Advanced Analytics:** Track your streaks, weekly/monthly totals, and daily averages.
+- **AI Protein Assistant:** Chat with an AI powered by Gemini to analyze your protein needs.
+- **Modern UI/UX:** Smooth animations, dark mode support, and a clean interface.
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- **Frontend:** React, Vite, Tailwind CSS
+- **Animations:** Motion (Framer Motion)
+- **AI:** Google Gemini API
+- **Icons:** Lucide React
 
+## Getting Started
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/HDeepak6/Egg-counter.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up your environment variables in a `.env` file:
+   ```env
+   GEMINI_API_KEY=your_api_key_here
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Repository
+
+[https://github.com/HDeepak6/Egg-counter](https://github.com/HDeepak6/Egg-counter)
